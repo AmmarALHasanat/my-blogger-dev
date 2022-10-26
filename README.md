@@ -10,16 +10,21 @@ We will build a Vuejs3 application in that there is Login/Logout, Register, Home
     - axios
     - vuex
 
+## Project setup
 
-# Login page
-![alt text](https://github.com/AmmarALHasanat/laravel9-vue3/blob/setup/login.png?raw=true)
+rename .env.example to .env
+...
+create your database and edit .env  
 
+...
+composer install
+```
+```
+npm i && npm run dev
+```
+```
+php artisan key:generate
+```
 
-# Register page
-![alt text](https://github.com/AmmarALHasanat/laravel9-vue3/blob/setup/register.png?raw=true)
-
-
-# Dashboard page
-![alt text](https://github.com/AmmarALHasanat/laravel9-vue3/blob/setup/dashboard.png?raw=true)
-
-
+```
+php artisan serve
