@@ -51,8 +51,9 @@
             let errors = ref([])
 
             const register = async() =>{
-                await axios.post('/api/register',form).then(res=>{
+                await axios.post('/api/user/register',form).then(res=>{
                     if(res.data.success){
+                        store.dispatch('setEmail',res.data.data.email);
                         store.dispatch('setToken',res.data.data.token)
                         router.push({name:'Dashboard'})
                     }

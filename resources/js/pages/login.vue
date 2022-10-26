@@ -30,7 +30,6 @@
         setup(){
             const router = useRouter()
             const store = useStore()
-
             let form = reactive({
                 email: '',
                 password: ''
@@ -38,8 +37,9 @@
             let error = ref('')
 
             const login = async() =>{
-                await axios.post('/api/login',form).then(res=>{
+                await axios.post('/api/user/login',form).then(res=>{
                     if(res.data.success){
+                        store.dispatch('setEmail',res.data.data.email);
                         store.dispatch('setToken',res.data.data.token);
                         router.push({name:'Dashboard'})
                     }else{
