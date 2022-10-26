@@ -12,19 +12,26 @@ We will build a Vuejs3 application in that there is Login/Logout, Register, Home
 
 ## Project setup
 
-rename .env.example to .env
-...
-create your database and edit .env  
+#### rename .env.example to .env
 
-...
+#### create your database and edit .env  
+
+```
 composer install
 ```
+
 ```
 npm i && npm run dev
 ```
+
 ```
 php artisan key:generate
 ```
 
 ```
+php artisan migrate
+```
+
+```
 php artisan serve
+```
