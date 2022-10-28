@@ -15,5 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/{any}', function () {
     return view('welcome');
-})->where('any','.*');
+// where any not equal to api or dashboard
+})->where('any', '^(?!api|dashboard).*$');
+
 
