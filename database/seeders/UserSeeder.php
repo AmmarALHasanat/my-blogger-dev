@@ -16,10 +16,11 @@ class UserSeeder extends Seeder
     public function run()
     {
         if (User::count() === 0) {
-            User::factory()->create([
+            $user=User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ]);
         }
+        $user->assignRole('user');
     }
 }

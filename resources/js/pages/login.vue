@@ -3,10 +3,11 @@
         <div class="row justify-content-center">
             <div class="col-sm-6 mt-4">
 
-                <h2>Login</h2>
-
-                <p class="text-danger" v-if="error">{{ error }}</p>
-
+                <h2>Login</h2>  
+                <p class="text-danger" v-for="error in errors" :key="error">
+                    <span v-for="err in error" :key="err">{{ err }}</span>
+                </p>
+                
                 <form @submit.prevent="login">
                     <div class="form-group">
                         <label for="email">Email Address:</label>
@@ -34,7 +35,7 @@
                 email: '',
                 password: ''
             });
-            let error = ref('')
+            let errors = ref([''])
 
             const login = async() =>{
                 await axios.post('/api/user/login',form).then(res=>{
@@ -42,15 +43,19 @@
                         store.dispatch('setEmail',res.data.data.email);
                         store.dispatch('setToken',res.data.data.token);
                         router.push({name:'Dashboard'})
-                    }else{
-                        error.value = res.data.message;
+                    }
+                }).catch(e=>{
+                    // error.value = e.response.data.message
+                    errors.value = e.response.data.errors
+                    if(errors.value==undefined){
+                        errors.value = [e.response.data.message]
                     }
                 })
             }
             return{
                 form,
                 login,
-                error
+                errors
             }
         }
     }

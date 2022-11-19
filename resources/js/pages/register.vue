@@ -58,7 +58,8 @@
                         router.push({name:'Dashboard'})
                     }
                 }).catch(e=>{
-                    errors.value = e.response.data.message
+                    //errors.value = e.response.data.message
+                    errors.value = e.response.data.errors
                 })
             }
             return{

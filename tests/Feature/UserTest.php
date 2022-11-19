@@ -19,6 +19,7 @@ class UserTest extends TestCase
             'password'=>'password',
             'c_password'=>'password'
         ]);
+        // $response->assertStatus(201);
         $response->assertStatus(200)->assertJson([
             'success'=>true,
             'data'=>[
@@ -38,13 +39,8 @@ class UserTest extends TestCase
             'password'=>'password',
             'c_password'=>'password'
         ]);
-        $response->assertStatus(400)->assertJson([
-            'success'=>false,
-            'message'=>[
-                'email'=>[
-                    'The email has already been taken.'
-                ]
-            ]
+        $response->assertStatus(422)->assertJson([
+            'message'=>'The email has already been taken.'
         ]);
     }
 
@@ -57,13 +53,8 @@ class UserTest extends TestCase
             'password'=>'password',
             'c_password'=>'password'
         ]);
-        $response->assertStatus(400)->assertJson([
-            'success'=>false,
-            'message'=>[
-                'email'=>[
-                    'The email must be a valid email address.'
-                ]
-            ]
+        $response->assertStatus(422)->assertJson([
+            'message'=>'The email must be a valid email address.'
         ]);
     }
 
@@ -76,13 +67,8 @@ class UserTest extends TestCase
             'password'=>'pass',
             'c_password'=>'pass'
         ]);
-        $response->assertStatus(400)->assertJson([
-            'success'=>false,
-            'message'=>[
-                'password'=>[
-                    'The password must be at least 6 characters.'
-                ]
-            ]
+        $response->assertStatus(422)->assertJson([
+            'message'=>'The password must be at least 6 characters.'
         ]);
     }
 
@@ -95,13 +81,8 @@ class UserTest extends TestCase
             'password'=>'password',
             'c_password'=>'pass'
         ]);
-        $response->assertStatus(400)->assertJson([
-            'success'=>false,
-            'message'=>[
-                'c_password'=>[
-                    'The c password and password must match.'
-                ]
-            ]
+        $response->assertStatus(422)->assertJson([
+            'message'=>'Confirm password must be same as password'
         ]);
     }
 
@@ -130,13 +111,8 @@ class UserTest extends TestCase
             'email'=>'fake',
             'password'=>'password'
         ]);
-        $response->assertStatus(400)->assertJson([
-            'success'=>false,
-            'message'=>[
-                'email'=>[
-                    'The email must be a valid email address.'
-                ]
-            ]
+        $response->assertStatus(422)->assertJson([
+            'message' => 'The email must be a valid email address.',
         ]);
     }
 
@@ -147,9 +123,9 @@ class UserTest extends TestCase
             'email'=>User::first()->email,
             'password'=>'testpass'
         ]);
-        $response->assertStatus(401)->assertJson([
+        $response->assertStatus(400)->assertJson([
             'success' => false,
-            'message' => 'Unauthorised'
+            'message' => 'User is not authenticated'
         ]);
     }
 
@@ -160,15 +136,11 @@ class UserTest extends TestCase
             'email'=>'fake',
             'password'=>'pass'
         ]);
-        $response->assertStatus(400)->assertJson([
-            'success'=>false,
-            'message'=>[
-                'email'=>[
-                    'The email must be a valid email address.'
-                ],
-                'password'=>[
-                    'The password must be at least 6 characters.'
-                ]
+        $response->assertStatus(422)->assertJson([
+            'message'=>'The email must be a valid email address. (and 1 more error)',
+            'errors'=>[
+                'email'=>['The email must be a valid email address.'],
+                'password'=>['The password must be at least 6 characters.']
             ]
         ]);
     }
