@@ -94,66 +94,56 @@ class UserTest extends TestCase
             'email'=>$user->email,
             'password'=>'password'
         ]);
-        $response->assertStatus(200);
-        // ->assertJson([
-        //     'success'=>true,
-        //     'data'=>[
-        //         'name'=>$user->name,
-        //         'email'=>$user->email,
-        //     ],
-        //     'message'=>'User login successfully'
-        // ]);
+        $response->assertStatus(200)->assertJson([
+            'success'=>true,
+            'data'=>[
+                'name'=>$user->name,
+                'email'=>$user->email,
+            ],
+            'message'=>'User login successfully'
+        ]);
     }
 
-    // /** @test */
-    // public function user_cannot_login_with_invalid_email()
-    // {
-    //     $response = $this->login([
-    //         'email'=>'fake',
-    //         'password'=>'password'
-    //     ]);
-    //     $response->assertStatus(400)->assertJson([
-    //         'success'=>false,
-    //         'message'=>[
-    //             'email'=>[
-    //                 'The email must be a valid email address.'
-    //             ]
-    //         ]
-    //     ]);
-    // }
+    /** @test */
+    public function user_cannot_login_with_invalid_email()
+    {
+        $response = $this->login([
+            'email'=>'fake',
+            'password'=>'password'
+        ]);
+        $response->assertStatus(422)->assertJson([
+            'message' => 'The email must be a valid email address.',
+        ]);
+    }
 
-    // /** @test */
-    // public function user_cannot_login_with_invalid_password()
-    // {
-    //     $response = $this->login([
-    //         'email'=>User::first()->email,
-    //         'password'=>'testpass'
-    //     ]);
-    //     $response->assertStatus(401)->assertJson([
-    //         'success' => false,
-    //         'message' => 'Unauthorised'
-    //     ]);
-    // }
+    /** @test */
+    public function user_cannot_login_with_invalid_password()
+    {
+        $response = $this->login([
+            'email'=>User::first()->email,
+            'password'=>'testpass'
+        ]);
+        $response->assertStatus(400)->assertJson([
+            'success' => false,
+            'message' => 'User is not authenticated'
+        ]);
+    }
 
-    // /** @test */
-    // public function user_cannot_login_with_invalid_email_and_password()
-    // {
-    //     $response = $this->login([
-    //         'email'=>'fake',
-    //         'password'=>'pass'
-    //     ]);
-    //     $response->assertStatus(400)->assertJson([
-    //         'success'=>false,
-    //         'message'=>[
-    //             'email'=>[
-    //                 'The email must be a valid email address.'
-    //             ],
-    //             'password'=>[
-    //                 'The password must be at least 6 characters.'
-    //             ]
-    //         ]
-    //     ]);
-    // }
+    /** @test */
+    public function user_cannot_login_with_invalid_email_and_password()
+    {
+        $response = $this->login([
+            'email'=>'fake',
+            'password'=>'pass'
+        ]);
+        $response->assertStatus(422)->assertJson([
+            'message'=>'The email must be a valid email address. (and 1 more error)',
+            'errors'=>[
+                'email'=>['The email must be a valid email address.'],
+                'password'=>['The password must be at least 6 characters.']
+            ]
+        ]);
+    }
     
 
 }

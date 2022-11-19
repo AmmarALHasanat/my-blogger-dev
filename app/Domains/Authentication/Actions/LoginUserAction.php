@@ -14,18 +14,13 @@ class LoginUserAction implements Actionable
     protected Request $request;
     protected string $role_name;
 
-    public function __construct(LoginUserRequest $request, string $role_name)
+    public function __construct(LoginUserRequest $request)
     {
         $this->request = $request;
-        $this->role_name = $role_name;
     }
 
     public function execute(): ? User
     {
-        
-        $user = User::whereHas('roles', function (Builder $query) {
-            $query->where('name', $this->role_name);
-        })->where('email', $this->request->email)->first();
-        return $user;
+        return User::where('email', $this->request->email)->first();
     }
 }
